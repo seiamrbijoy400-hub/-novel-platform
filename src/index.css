@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAF9F7;
+  color: #111110;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+.dark body {
+  background-color: #0C0C0B;
+  color: #FAF9F7;
+}
+
+/* RTL layout support for Arabic and Urdu */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Complex Indic Script Conjunct Ligatures */
+.font-indic {
+  font-feature-settings: "akhn" 1, "rphf" 1, "blwf" 1;
+}
+
+/* Arabic / Urdu Ligature Enhancement */
+.font-arabic {
+  font-feature-settings: "liga" 1, "calt" 1, "curs" 1;
+}
+
+::selection {
+  background-color: #B8FF00;
+  color: #111110;
+}
+
+/* Subtle, distraction-free scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(17, 17, 16, 0.2);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(250, 249, 247, 0.2);
+}

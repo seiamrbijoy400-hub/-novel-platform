@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ReadingSettings } from '../types/user';
+import { readStored, writeStored } from '../utils/storage';
 
 interface ReaderContextType {
   settings: ReadingSettings;
@@ -9,8 +10,8 @@ interface ReaderContextType {
 
 const DEFAULT_SETTINGS: ReadingSettings = {
   fontSize: 18,
-  fontFamily: 'serif',
-  theme: 'paper',
+  fontFamily: 'literata',
+  theme: 'light',
   lineHeight: 1.8,
   marginHorizontal: 24,
   readingMode: 'scroll',
@@ -20,14 +21,11 @@ const DEFAULT_SETTINGS: ReadingSettings = {
 const ReaderContext = createContext<ReaderContextType | undefined>(undefined);
 
 export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [settings, setSettings] = useState<ReadingSettings>(() => {
-    const saved = localStorage.getItem('novela_reader_settings');
-    return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
-  });
+  const [settings, setSettings] = useState<ReadingSettings>(() =>
+    readStored('novela_reader_settings', DEFAULT_SETTINGS)
+  );
 
-  useEffect(() => {
-    localStorage.setItem('novela_reader_settings', JSON.stringify(settings));
-  }, [settings]);
+  useEffect(() => writeStored('novela_reader_settings', settings), [settings]);
 
   const updateSettings = (newSettings: Partial<ReadingSettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));

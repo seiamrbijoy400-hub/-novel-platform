@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import React, { useMemo } from 'react';
 import { BookCard } from '../components/book/BookCard';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
 import { Award } from 'lucide-react';
 
 export const FeaturedPage: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks().then(all => {
-      if (isMounted) {
-        const featured = all.filter(b => b.ratingAverage >= 4.8);
-        setBooks(featured);
-        setLoading(false);
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+  const { books: allBooks, loading } = useCatalogBooks();
+  const books = useMemo(() => allBooks.filter(b => b.ratingAverage >= 4.8), [allBooks]);
 
   return (
     <div className="space-y-8 pb-20 pt-4">

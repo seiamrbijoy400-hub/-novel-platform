@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Bookmark, ReadingProgress } from '../types/book';
+import { readStored, writeStored } from '../utils/storage';
 
 interface LibraryContextType {
   libraryIds: string[];
@@ -18,35 +19,35 @@ interface LibraryContextType {
 const LibraryContext = createContext<LibraryContextType | undefined>(undefined);
 
 export const LibraryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [libraryIds, setLibraryIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('novela_library');
-    return saved ? JSON.parse(saved) : ['book-1', 'book-2', 'book-3'];
-  });
+  const [libraryIds, setLibraryIds] = useState<string[]>(() =>
+    readStored('novela_library', ['book-1', 'book-2', 'book-3'])
+  );
 
-  const [favoriteIds, setFavoriteIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('novela_favorites');
-    return saved ? JSON.parse(saved) : ['book-1', 'book-4'];
-  });
+  const [favoriteIds, setFavoriteIds] = useState<string[]>(() =>
+    readStored('novela_favorites', ['book-1', 'book-4'])
+  );
 
   const [currentTerritory, setCurrentTerritory] = useState<string>(() => {
-    return localStorage.getItem('novela_territory') || 'US';
+    try {
+      return localStorage.getItem('novela_territory') || 'US';
+    } catch {
+      return 'US';
+    }
   });
 
-  const [readingProgress, setReadingProgress] = useState<Record<string, ReadingProgress>>(() => {
-    const saved = localStorage.getItem('novela_progress');
-    return saved ? JSON.parse(saved) : {
+  const [readingProgress, setReadingProgress] = useState<Record<string, ReadingProgress>>(() =>
+    readStored('novela_progress', {
       'book-1': {
         bookId: 'book-1',
         currentChapterIndex: 1,
         progressionPercentage: 25.0,
         lastReadAt: new Date().toISOString(),
       }
-    };
-  });
+    })
+  );
 
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => {
-    const saved = localStorage.getItem('novela_bookmarks');
-    return saved ? JSON.parse(saved) : [
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() =>
+    readStored('novela_bookmarks', [
       {
         id: 'bm-1',
         bookId: 'book-1',
@@ -57,27 +58,20 @@ export const LibraryProvider: React.FC<{ children: React.ReactNode }> = ({ child
         note: 'Poetic opening reflection on human endurance.',
         createdAt: '2026-11-18T16:20:00Z',
       }
-    ];
-  });
+    ])
+  );
+
+  useEffect(() => writeStored('novela_library', libraryIds), [libraryIds]);
+  useEffect(() => writeStored('novela_favorites', favoriteIds), [favoriteIds]);
+  useEffect(() => writeStored('novela_progress', readingProgress), [readingProgress]);
+  useEffect(() => writeStored('novela_bookmarks', bookmarks), [bookmarks]);
 
   useEffect(() => {
-    localStorage.setItem('novela_library', JSON.stringify(libraryIds));
-  }, [libraryIds]);
-
-  useEffect(() => {
-    localStorage.setItem('novela_favorites', JSON.stringify(favoriteIds));
-  }, [favoriteIds]);
-
-  useEffect(() => {
-    localStorage.setItem('novela_progress', JSON.stringify(readingProgress));
-  }, [readingProgress]);
-
-  useEffect(() => {
-    localStorage.setItem('novela_bookmarks', JSON.stringify(bookmarks));
-  }, [bookmarks]);
-
-  useEffect(() => {
-    localStorage.setItem('novela_territory', currentTerritory);
+    try {
+      localStorage.setItem('novela_territory', currentTerritory);
+    } catch {
+      // Ignore storage errors.
+    }
   }, [currentTerritory]);
 
   const setTerritory = (code: string) => {

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import { useCatalogBook } from '../hooks/useCatalogBooks';
 import { ReaderView } from '../components/reader/ReaderView';
 import { ArrowLeft } from 'lucide-react';
 
@@ -11,21 +10,7 @@ export const ReaderPage: React.FC = () => {
   const chapterParam = searchParams.get('chapter');
   const initialChapterIndex = chapterParam ? parseInt(chapterParam, 10) : 1;
 
-  const [book, setBook] = useState<Book | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (slug) {
-      CatalogService.getBookBySlug(slug).then(b => {
-        if (isMounted) {
-          setBook(b);
-          setLoading(false);
-        }
-      });
-    }
-    return () => { isMounted = false; };
-  }, [slug]);
+  const { book, loading } = useCatalogBook(slug);
 
   if (loading) {
     return (

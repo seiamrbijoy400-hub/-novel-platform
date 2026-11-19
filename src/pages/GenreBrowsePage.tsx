@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { MOCK_GENRES } from '../data/mockGenres';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
 import { BookCard } from '../components/book/BookCard';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
 import { BookMarked } from 'lucide-react';
 
 export const GenreBrowsePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeGenreName = searchParams.get('genre') || 'all';
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks().then(all => {
-      if (isMounted) {
-        setBooks(all);
-        setLoading(false);
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+  const { books, loading } = useCatalogBooks();
 
   const displayedBooks = activeGenreName === 'all'
     ? books

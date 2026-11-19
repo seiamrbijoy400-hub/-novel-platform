@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import { useCatalogBook } from '../hooks/useCatalogBooks';
 import { useLibrary } from '../context/LibraryContext';
 import { RightsEngine } from '../services/rightsEngine';
 import { RightsBadge } from '../components/book/RightsBadge';
+import { BookCover } from '../components/book/BookCover';
 import {
   BookOpen,
   Bookmark,
@@ -22,24 +22,10 @@ export const BookDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { libraryIds, toggleLibrary, readingProgress, currentTerritory } = useLibrary();
-  const [book, setBook] = useState<Book | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { book, loading } = useCatalogBook(slug);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportReason, setReportReason] = useState('corrupted_formatting');
   const [reportSubmitted, setReportSubmitted] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (slug) {
-      CatalogService.getBookBySlug(slug).then(found => {
-        if (isMounted) {
-          setBook(found);
-          setLoading(false);
-        }
-      });
-    }
-    return () => { isMounted = false; };
-  }, [slug]);
 
   if (loading) {
     return (
@@ -99,9 +85,10 @@ export const BookDetailPage: React.FC = () => {
           {/* Left Column: Book Cover & Shelf Action */}
           <div className="md:col-span-4 lg:col-span-4 flex flex-col items-center sm:items-start space-y-4">
             <div className="relative w-48 sm:w-60 aspect-[2/3] rounded-lg shadow-xl overflow-hidden border border-stone-300 dark:border-stone-800 bg-stone-100">
-              <img
+              <BookCover
                 src={book.coverImageUrl}
-                alt={`Cover of ${book.title}`}
+                title={book.title}
+                authorName={book.author.name}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-2.5 left-2.5">

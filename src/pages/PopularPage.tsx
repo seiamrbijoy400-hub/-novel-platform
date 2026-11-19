@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import React, { useMemo } from 'react';
 import { BookCard } from '../components/book/BookCard';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
 import { TrendingUp } from 'lucide-react';
 
 export const PopularPage: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks().then(all => {
-      if (isMounted) {
-        const sorted = [...all].sort((a, b) => b.ratingAverage - a.ratingAverage);
-        setBooks(sorted);
-        setLoading(false);
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+  const { books: allBooks, loading } = useCatalogBooks();
+  const books = useMemo(
+    () => [...allBooks].sort((a, b) => b.ratingAverage - a.ratingAverage),
+    [allBooks]
+  );
 
   return (
     <div className="space-y-8 pb-20 pt-4">

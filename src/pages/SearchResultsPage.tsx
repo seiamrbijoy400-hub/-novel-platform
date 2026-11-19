@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import React, { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { BookCard } from '../components/book/BookCard';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
 import { Search, CheckCircle2, RotateCcw } from 'lucide-react';
 
 export const SearchResultsPage: React.FC = () => {
@@ -10,19 +9,7 @@ export const SearchResultsPage: React.FC = () => {
   const initialQuery = searchParams.get('q') || '';
   const [query, setQuery] = useState(initialQuery);
   const [fullBookOnly, setFullBookOnly] = useState(true);
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks().then(all => {
-      if (isMounted) {
-        setBooks(all);
-        setLoading(false);
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+  const { books, loading } = useCatalogBooks();
 
   const results = useMemo(() => {
     const q = (searchParams.get('q') || '').toLowerCase().trim();

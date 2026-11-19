@@ -1,34 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
+import React, { useState, useMemo } from 'react';
 import { MOCK_LANGUAGES } from '../data/mockLanguages';
 import { MOCK_GENRES } from '../data/mockGenres';
 import { BookCard } from '../components/book/BookCard';
-import { Search, Filter, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
+import { Search, RotateCcw, CheckCircle2 } from 'lucide-react';
 
 export const ExplorePage: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { books, loading } = useCatalogBooks();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [fullBookOnly, setFullBookOnly] = useState<boolean>(true);
   const [selectedYear, setSelectedYear] = useState<string>('all');
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks()
-      .then(all => {
-        if (isMounted) {
-          setBooks(all);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (isMounted) setLoading(false);
-      });
-    return () => { isMounted = false; };
-  }, []);
 
   const filteredBooks = useMemo(() => {
     return books.filter(book => {

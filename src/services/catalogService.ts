@@ -14,62 +14,73 @@ interface OpenLibraryDoc {
   ebook_access?: string;
 }
 
-interface GutendexBook {
-  id: number;
-  title: string;
-  authors: Array<{ name: string; birth_year?: number; death_year?: number }>;
-  languages: string[];
-  subjects: string[];
-  formats: Record<string, string>;
-  download_count: number;
-}
+type CatalogListener = (books: Book[]) => void;
 
+const CACHE_KEY = 'novela_catalog_v1';
+const CACHE_TTL_MS = 10 * 60 * 1000;
+const REQUEST_TIMEOUT_MS = 4000;
+
+/**
+ * Single source of truth for the book catalog.
+ *
+ * The verified local catalog is always available immediately. Live providers are
+ * queried in the background and merged afterwards, so a slow or offline API can
+ * never leave the UI empty or stuck on a loading skeleton.
+ */
 export class CatalogService {
-  private static memoryCache: Map<string, Book[]> = new Map();
-  private static allCatalog: Book[] = [...MOCK_BOOKS];
+  private static listeners = new Set<CatalogListener>();
+  private static catalog: Book[] = CatalogService.loadCachedCatalog();
+  private static hydration: Promise<Book[]> | null = null;
+  private static hydrated = false;
 
-  /**
-   * Initializes the catalog with baseline verified complete novels and attempts live API hydration
-   */
-  public static async getAllBooks(): Promise<Book[]> {
-    if (this.memoryCache.has('all_books')) {
-      return this.memoryCache.get('all_books')!;
-    }
-
-    try {
-      // Hydrate with Open Library and Gutendex in the background/parallel
-      const [openLibBooks, gutenBooks] = await Promise.allSettled([
-        this.fetchFromOpenLibrary('language:ben OR language:ara OR language:hin OR language:spa OR language:eng', 12),
-        this.fetchFromGutendex('es', 6),
-      ]);
-
-      const liveBooks: Book[] = [];
-
-      if (openLibBooks.status === 'fulfilled') {
-        liveBooks.push(...openLibBooks.value);
-      }
-      if (gutenBooks.status === 'fulfilled') {
-        liveBooks.push(...gutenBooks.value);
-      }
-
-      // Merge and deduplicate against baseline
-      const merged = this.deduplicateBooks([...MOCK_BOOKS, ...liveBooks]);
-      this.allCatalog = merged;
-      this.memoryCache.set('all_books', merged);
-      return merged;
-    } catch (err) {
-      console.warn('Live API hydration encountered network latency, serving verified base catalog:', err);
-      this.memoryCache.set('all_books', MOCK_BOOKS);
-      return MOCK_BOOKS;
-    }
+  /** Returns the currently known books synchronously (never empty). */
+  public static getSnapshot(): Book[] {
+    if (this.catalog.length === 0) this.catalog = [...MOCK_BOOKS];
+    return this.catalog;
   }
 
   /**
-   * Fetch by slug
+   * Kept for backwards compatibility with the pages. Resolves immediately with
+   * the local catalog; background hydration is started as a side effect.
    */
+  public static async getAllBooks(): Promise<Book[]> {
+    void this.hydrate();
+    return this.getSnapshot();
+  }
+
+  /** Subscribe to catalog updates (used by useCatalogBooks). */
+  public static subscribe(listener: CatalogListener): () => void {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  /** Hydrate from live providers at most once at a time. */
+  public static hydrate(force = false): Promise<Book[]> {
+    if (this.hydration) return this.hydration;
+    if (this.hydrated && !force) return Promise.resolve(this.catalog);
+
+    this.hydration = this.fetchAndMerge()
+      .then(books => {
+        this.catalog = books;
+        this.hydrated = true;
+        this.saveCachedCatalog(books);
+        this.listeners.forEach(listener => listener(books));
+        return books;
+      })
+      .catch(err => {
+        console.warn('Catalog hydration skipped; using verified local catalog.', err);
+        return this.catalog;
+      })
+      .finally(() => {
+        this.hydration = null;
+      });
+
+    return this.hydration;
+  }
+
   public static async getBookBySlug(slug: string): Promise<Book | null> {
-    const books = await this.getAllBooks();
-    return books.find(b => b.slug === slug) || MOCK_BOOKS.find(b => b.slug === slug) || null;
+    void this.hydrate();
+    return this.getSnapshot().find(b => b.slug === slug) || null;
   }
 
   /**
@@ -86,33 +97,21 @@ export class CatalogService {
     const books = await this.getAllBooks();
 
     return books.filter(book => {
-      // 1. Full book filter
       if (params.fullBookOnly && (!book.fullBookAvailable || book.accessType !== 'full_book')) {
         return false;
       }
-
-      // 2. Language filter
       if (params.language && params.language !== 'all' && book.languageId !== params.language) {
         return false;
       }
-
-      // 3. Genre filter
       if (params.genre && params.genre !== 'all') {
         const matchesGenre = book.genres.some(
           g => g.toLowerCase() === params.genre!.toLowerCase()
         );
         if (!matchesGenre) return false;
       }
+      if (params.yearMin && book.publicationYear < params.yearMin) return false;
+      if (params.yearMax && book.publicationYear > params.yearMax) return false;
 
-      // 4. Year range
-      if (params.yearMin && book.publicationYear < params.yearMin) {
-        return false;
-      }
-      if (params.yearMax && book.publicationYear > params.yearMax) {
-        return false;
-      }
-
-      // 5. Search query
       if (params.searchQuery && params.searchQuery.trim()) {
         const q = params.searchQuery.toLowerCase().trim();
         const matchTitle = book.title.toLowerCase().includes(q);
@@ -129,170 +128,158 @@ export class CatalogService {
     });
   }
 
+  // ── Live provider hydration ───────────────────────────────────────────────
+
+  private static async fetchAndMerge(): Promise<Book[]> {
+    const [nearEast, europe] = await Promise.allSettled([
+      this.fetchFromOpenLibrary('language:(ben OR ara OR hin OR urd)', 12),
+      this.fetchFromOpenLibrary('language:(spa OR eng OR fra OR deu)', 12),
+    ]);
+
+    const liveBooks: Book[] = [];
+    if (nearEast.status === 'fulfilled') liveBooks.push(...nearEast.value);
+    if (europe.status === 'fulfilled') liveBooks.push(...europe.value);
+
+    // Local verified books always win and are never removed by live data.
+    return this.deduplicateBooks([...MOCK_BOOKS, ...liveBooks]);
+  }
+
   /**
-   * Live Open Library API fetcher
+   * Open Library search. The query is intentionally simple: complex OR + range
+   * queries make the public API return HTTP 500, so year filtering is local.
    */
-  private static async fetchFromOpenLibrary(query: string, limit: number = 10): Promise<Book[]> {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 6000); // 6s timeout
-
+  private static async fetchFromOpenLibrary(query: string, limit: number): Promise<Book[]> {
     try {
-      const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}+first_publish_year:[2000+TO+2026]&limit=${limit}`;
-      const res = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeout);
-
-      if (!res.ok) return [];
-
-      const data = await res.json();
-      const docs: OpenLibraryDoc[] = data.docs || [];
+      const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${limit}`;
+      const data = await this.fetchJson<{ docs?: OpenLibraryDoc[] }>(url);
+      const docs = data.docs || [];
 
       return docs
-        .filter(doc => doc.title && doc.author_name && doc.author_name.length > 0)
-        .map(doc => {
-          const authorName = doc.author_name![0];
-          const year = doc.first_publish_year || 2020;
-          const slug = this.slugify(`${doc.title}-${year}`);
-          const langCode = doc.language ? this.normalizeLangCode(doc.language[0]) : 'en';
-          const direction: TextDirection = ['ar', 'ur', 'he', 'fa'].includes(langCode) ? 'rtl' : 'ltr';
-
-          const hasCover = doc.cover_i;
-          const coverUrl = hasCover
-            ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-            : `https://picsum.photos/seed/${encodeURIComponent(slug)}/400/600`;
-
-          // Check if full book or preview
-          const isBorrowable = doc.ebook_access === 'borrowable' || doc.ebook_access === 'public';
-          const accessType: AccessType = doc.ebook_access === 'public' ? 'full_book' : 'preview_only';
-
-          return {
-            id: `ol-${doc.key.replace('/works/', '')}`,
-            slug,
-            isbn13: doc.isbn ? doc.isbn[0] : undefined,
-            title: doc.title,
-            languageId: langCode,
-            direction,
-            author: {
-              id: `auth-${this.slugify(authorName)}`,
-              slug: this.slugify(authorName),
-              name: authorName,
-              biography: `Author indexed on Open Library. Published works include ${doc.title}.`,
-              photoUrl: `https://picsum.photos/seed/${encodeURIComponent(authorName)}/300/300`,
-              country: 'International',
-              verified: true,
-              totalNovels: 1,
-            },
-            publisher: doc.publisher ? {
-              id: `pub-${this.slugify(doc.publisher[0])}`,
-              name: doc.publisher[0],
-              countryCode: 'GLOBAL',
-              partnerSince: '2020',
-            } : undefined,
-            publicationDate: `${year}-01-01`,
-            publicationYear: year,
-            genres: doc.subject ? doc.subject.slice(0, 2) : ['Contemporary Fiction'],
-            synopsis: `Published in ${year}. Complete literary record indexed via Open Library digital database.`,
-            coverImageUrl: coverUrl,
-            completionStatus: 'completed',
-            accessType,
-            fullBookAvailable: accessType === 'full_book',
-            contentRating: 'General Audience',
-            moderationStatus: 'approved',
-            isAdultRestricted: false,
-            sourceProviderCode: 'open_library',
-            sourceProviderName: 'Open Library Digital Archive',
-            rightsHolderName: doc.publisher ? doc.publisher[0] : authorName,
-            allowedTerritories: ['GLOBAL'],
-            ratingAverage: 4.70,
-            ratingCount: 180,
-            totalChapters: 3,
-            estimatedReadingMinutes: 30,
-            chapters: [
-              {
-                id: `ch-ol-1`,
-                chapterIndex: 1,
-                title: 'Chapter 1 — Opening',
-                wordCount: 450,
-                content: `Authorized digital edition of "${doc.title}". Published by ${doc.publisher?.[0] || 'International Press'} in ${year}.\n\nFull text cataloged under Open Library public digital access program.`
-              }
-            ]
-          };
-        });
-    } catch {
+        .filter(doc =>
+          doc.title &&
+          doc.author_name &&
+          doc.author_name.length > 0 &&
+          (doc.first_publish_year === undefined || doc.first_publish_year >= 1990)
+        )
+        .map(doc => this.mapOpenLibraryDoc(doc));
+    } catch (err) {
+      console.warn('Open Library hydration failed:', err);
       return [];
     }
   }
 
-  /**
-   * Live Gutendex API fetcher for genuine full-text readable works
-   */
-  private static async fetchFromGutendex(lang: string = 'es', limit: number = 6): Promise<Book[]> {
+  private static mapOpenLibraryDoc(doc: OpenLibraryDoc): Book {
+    const authorName = doc.author_name![0];
+    const year = doc.first_publish_year || 2020;
+    const slug = this.slugify(`${doc.title}-${year}`);
+    const langCode = doc.language ? this.normalizeLangCode(doc.language[0]) : 'en';
+    const direction: TextDirection = ['ar', 'ur', 'he', 'fa'].includes(langCode) ? 'rtl' : 'ltr';
+    const accessType: AccessType = doc.ebook_access === 'public' ? 'full_book' : 'preview_only';
+    const coverUrl = doc.cover_i
+      ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+      : `https://picsum.photos/seed/${encodeURIComponent(slug)}/400/600`;
+
+    return {
+      id: `ol-${doc.key.replace('/works/', '')}`,
+      slug,
+      isbn13: doc.isbn ? doc.isbn[0] : undefined,
+      title: doc.title,
+      languageId: langCode,
+      direction,
+      author: {
+        id: `auth-${this.slugify(authorName)}`,
+        slug: this.slugify(authorName),
+        name: authorName,
+        biography: `Author indexed on Open Library. Published works include ${doc.title}.`,
+        photoUrl: `https://picsum.photos/seed/${encodeURIComponent(authorName)}/300/300`,
+        country: 'International',
+        verified: true,
+        totalNovels: 1,
+      },
+      publisher: doc.publisher ? {
+        id: `pub-${this.slugify(doc.publisher[0])}`,
+        name: doc.publisher[0],
+        countryCode: 'GLOBAL',
+        partnerSince: '2020',
+      } : undefined,
+      publicationDate: `${year}-01-01`,
+      publicationYear: year,
+      genres: doc.subject ? doc.subject.slice(0, 2) : ['Contemporary Fiction'],
+      synopsis: `Published in ${year}. Complete literary record indexed via Open Library digital database.`,
+      coverImageUrl: coverUrl,
+      completionStatus: 'completed',
+      accessType,
+      fullBookAvailable: accessType === 'full_book',
+      contentRating: 'General Audience',
+      moderationStatus: 'approved',
+      isAdultRestricted: false,
+      sourceProviderCode: 'open_library',
+      sourceProviderName: 'Open Library Digital Archive',
+      rightsHolderName: doc.publisher ? doc.publisher[0] : authorName,
+      allowedTerritories: ['GLOBAL'],
+      ratingAverage: 4.7,
+      ratingCount: 180,
+      totalChapters: 3,
+      estimatedReadingMinutes: 30,
+      chapters: accessType === 'full_book' ? [{
+        id: `ch-ol-1`,
+        chapterIndex: 1,
+        title: 'Chapter 1 — Opening',
+        wordCount: 450,
+        content: `Authorized digital edition of "${doc.title}". Published by ${doc.publisher?.[0] || 'International Press'} in ${year}.\n\nFull text cataloged under Open Library public digital access program.`
+      }] : [],
+    };
+  }
+
+  /** fetch with a hard deadline so a stalled request can never block the UI. */
+  private static async fetchJson<T>(url: string): Promise<T> {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 6000);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const deadline = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => {
+        controller.abort();
+        reject(new Error(`Request timed out: ${url}`));
+      }, REQUEST_TIMEOUT_MS);
+    });
 
     try {
-      const url = `https://gutendex.com/books/?languages=${lang}&limit=${limit}`;
-      const res = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeout);
+      const response = await Promise.race([
+        fetch(url, { signal: controller.signal }),
+        deadline,
+      ]);
+      if (!response.ok) throw new Error(`Provider returned HTTP ${response.status}`);
+      return await Promise.race([response.json() as Promise<T>, deadline]);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
 
-      if (!res.ok) return [];
+  // ── Cache & helpers ───────────────────────────────────────────────────────
 
-      const data = await res.json();
-      const results: GutendexBook[] = data.results || [];
-
-      return results.slice(0, limit).map(item => {
-        const authorName = item.authors[0] ? item.authors[0].name.split(',').reverse().join(' ').trim() : 'Anonymous';
-        const slug = this.slugify(`${item.title}-${item.id}`);
-        const langCode = item.languages[0] || 'en';
-        const coverUrl = item.formats['image/jpeg'] || `https://picsum.photos/seed/guten-${item.id}/400/600`;
-
-        return {
-          id: `gt-${item.id}`,
-          slug,
-          title: item.title,
-          languageId: langCode,
-          direction: ['ar', 'ur', 'he', 'fa'].includes(langCode) ? 'rtl' : 'ltr',
-          author: {
-            id: `auth-gt-${item.id}`,
-            slug: this.slugify(authorName),
-            name: authorName,
-            biography: `Author indexed in public digital library collections.`,
-            photoUrl: `https://picsum.photos/seed/auth-${item.id}/300/300`,
-            country: 'International',
-            verified: true,
-            totalNovels: 1,
-          },
-          publicationDate: '2001-01-01',
-          publicationYear: 2001,
-          genres: item.subjects && item.subjects.length > 0 ? [item.subjects[0].split('--')[0].trim()] : ['Classic Fiction'],
-          synopsis: `100% complete and fully readable novel. Cataloged via Project Gutenberg open distribution format.`,
-          coverImageUrl: coverUrl,
-          completionStatus: 'completed',
-          accessType: 'full_book',
-          fullBookAvailable: true,
-          contentRating: 'General Audience',
-          moderationStatus: 'approved',
-          isAdultRestricted: false,
-          sourceProviderCode: 'gutenberg',
-          sourceProviderName: 'Project Gutenberg Open Access',
-          rightsHolderName: 'Public Domain / Open Access Archive',
-          allowedTerritories: ['GLOBAL'],
-          ratingAverage: 4.80,
-          ratingCount: 220,
-          totalChapters: 2,
-          estimatedReadingMinutes: 25,
-          chapters: [
-            {
-              id: `gt-ch1-${item.id}`,
-              chapterIndex: 1,
-              title: 'Capítulo 1 — Texto Completo',
-              wordCount: 500,
-              content: `Edición completa y digitalizada de "${item.title}".\n\nAutor: ${authorName}.\n\nEsta obra está disponible íntegramente de principio a fin sin restricciones de acceso ni límites de capítulos.`
-            }
-          ]
-        };
-      });
+  private static loadCachedCatalog(): Book[] {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return [...MOCK_BOOKS];
+      const parsed = JSON.parse(raw) as { savedAt?: number; books?: Book[] };
+      if (
+        parsed.savedAt &&
+        Date.now() - parsed.savedAt < CACHE_TTL_MS &&
+        Array.isArray(parsed.books) &&
+        parsed.books.length > 0
+      ) {
+        return this.deduplicateBooks([...MOCK_BOOKS, ...parsed.books]);
+      }
     } catch {
-      return [];
+      // Corrupt or unavailable storage: fall back to the verified local catalog.
+    }
+    return [...MOCK_BOOKS];
+  }
+
+  private static saveCachedCatalog(books: Book[]): void {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), books }));
+    } catch {
+      // Storage may be full or disabled; the in-memory catalog still works.
     }
   }
 
@@ -316,24 +303,15 @@ export class CatalogService {
 
   private static normalizeLangCode(raw: string): string {
     const map: Record<string, string> = {
-      ben: 'bn',
-      bengali: 'bn',
-      ara: 'ar',
-      arabic: 'ar',
-      hin: 'hi',
-      hindi: 'hi',
-      urd: 'ur',
-      urdu: 'ur',
-      spa: 'es',
-      spanish: 'es',
-      fra: 'fr',
-      french: 'fr',
-      eng: 'en',
-      english: 'en',
-      zho: 'zh',
-      chinese: 'zh',
-      deu: 'de',
-      german: 'de',
+      ben: 'bn', bengali: 'bn',
+      ara: 'ar', arabic: 'ar',
+      hin: 'hi', hindi: 'hi',
+      urd: 'ur', urdu: 'ur',
+      spa: 'es', spanish: 'es',
+      fra: 'fr', french: 'fr',
+      eng: 'en', english: 'en',
+      zho: 'zh', chinese: 'zh',
+      deu: 'de', german: 'de',
     };
     return map[raw.toLowerCase()] || raw.slice(0, 2);
   }

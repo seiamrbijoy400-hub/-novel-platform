@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Book } from '../types/book';
-import { CatalogService } from '../services/catalogService';
 import { MOCK_LANGUAGES } from '../data/mockLanguages';
 import { BookCard } from '../components/book/BookCard';
+import { BookCover } from '../components/book/BookCover';
 import { RightsBadge } from '../components/book/RightsBadge';
 import { useLibrary } from '../context/LibraryContext';
+import { useCatalogBooks } from '../hooks/useCatalogBooks';
 import {
   BookOpen,
   ArrowRight,
@@ -18,25 +18,9 @@ import {
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedLang, setSelectedLang] = useState<string>('all');
+  const { books, loading } = useCatalogBooks();
   const { readingProgress } = useLibrary();
-
-  useEffect(() => {
-    let isMounted = true;
-    CatalogService.getAllBooks()
-      .then(fetchedBooks => {
-        if (isMounted) {
-          setBooks(fetchedBooks);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (isMounted) setLoading(false);
-      });
-    return () => { isMounted = false; };
-  }, []);
 
   // Featured Masterwork (100% complete, verified)
   const featuredBook = books.find(b => b.fullBookAvailable && b.slug === 'the-last-tide-of-padma') || books[0];
@@ -53,7 +37,8 @@ export const HomePage: React.FC = () => {
   const vernacularBooks = books.filter(b => ['bn', 'ar', 'ur', 'hi'].includes(b.languageId));
 
   // Last read book for instant resume
-  const lastReadId = Object.keys(readingProgress)[0];
+  const lastReadId = Object.values(readingProgress)
+    .sort((a, b) => b.lastReadAt.localeCompare(a.lastReadAt))[0]?.bookId;
   const lastReadBook = books.find(b => b.id === lastReadId);
   const lastReadData = lastReadBook ? readingProgress[lastReadBook.id] : null;
 
@@ -67,9 +52,10 @@ export const HomePage: React.FC = () => {
               {/* Left Column: Book Presentation */}
               <div className="md:col-span-5 flex justify-center">
                 <div className="relative w-48 sm:w-64 aspect-[2/3] rounded-lg shadow-2xl overflow-hidden border border-stone-300 dark:border-stone-800">
-                  <img
+                  <BookCover
                     src={featuredBook.coverImageUrl}
-                    alt={featuredBook.title}
+                    title={featuredBook.title}
+                    authorName={featuredBook.author.name}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-3 left-3">

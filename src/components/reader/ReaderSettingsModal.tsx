@@ -1,5 +1,6 @@
 import React from 'react';
 import { useReader } from '../../context/ReaderContext';
+import { ReadingSettings } from '../../types/user';
 import { X, Type } from 'lucide-react';
 
 interface ReaderSettingsModalProps {
@@ -12,14 +13,14 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = ({ isOpen
 
   if (!isOpen) return null;
 
-  const themes = [
+  const themes: Array<{ id: ReadingSettings['theme']; label: string; bg: string; fg: string }> = [
     { id: 'light',   label: 'Light',  bg: '#FFFFFF', fg: '#111110' },
     { id: 'sepia',   label: 'Sepia',  bg: '#FFF8E7', fg: '#5C4A1E' },
     { id: 'dark',    label: 'Dark',   bg: '#1C1C1A', fg: '#E8E6E1' },
     { id: 'night',   label: 'Night',  bg: '#000000', fg: '#CCCCCC' },
   ];
 
-  const fonts = [
+  const fonts: Array<{ id: ReadingSettings['fontFamily']; label: string }> = [
     { id: 'literata',    label: 'Literata (Serif)' },
     { id: 'sans-serif',  label: 'Plus Jakarta Sans' },
     { id: 'arabic',      label: 'Amiri (Arabic/Urdu)' },
@@ -54,7 +55,7 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = ({ isOpen
             {themes.map(th => (
               <button
                 key={th.id}
-                onClick={() => updateSettings({ theme: th.id as any })}
+                onClick={() => updateSettings({ theme: th.id })}
                 style={{ backgroundColor: th.bg, color: th.fg }}
                 className={`p-2.5 rounded-lg border text-[11px] font-semibold transition-all ${
                   settings.theme === th.id
@@ -77,7 +78,7 @@ export const ReaderSettingsModal: React.FC<ReaderSettingsModalProps> = ({ isOpen
             {fonts.map(f => (
               <button
                 key={f.id}
-                onClick={() => updateSettings({ fontFamily: f.id as any })}
+                onClick={() => updateSettings({ fontFamily: f.id })}
                 className={`p-2.5 rounded-lg border text-xs font-medium text-left transition-all ${
                   settings.fontFamily === f.id
                     ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-900'

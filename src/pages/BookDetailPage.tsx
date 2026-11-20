@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   ArrowLeft,
+  Globe,
 } from 'lucide-react';
 
 export const BookDetailPage: React.FC = () => {
@@ -202,6 +203,18 @@ export const BookDetailPage: React.FC = () => {
                 </span>
               </Link>
 
+              <div className="flex items-center gap-4">
+                {book.sourceUrl && (
+                  <a
+                    href={book.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline inline-flex items-center gap-1.5"
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>View real record on Open Library ↗</span>
+                  </a>
+                )}
               <button
                 onClick={() => setReportModalOpen(true)}
                 className="text-xs font-mono text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 flex items-center gap-1.5"
@@ -209,6 +222,7 @@ export const BookDetailPage: React.FC = () => {
                 <Flag className="w-3.5 h-3.5" />
                 <span>Report Content or Formatting Issue</span>
               </button>
+              </div>
             </div>
           </div>
         </div>
@@ -226,6 +240,19 @@ export const BookDetailPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {(!book.chapters || book.chapters.length === 0) && (
+            <div className="sm:col-span-2 p-4 rounded-lg border border-dashed border-stone-300 dark:border-night-border text-xs text-stone-500 dark:text-stone-400">
+              This is a real catalog record imported from Open Library; the full text is hosted by the source.
+              {book.sourceUrl && (
+                <>
+                  {' '}
+                  <a href={book.sourceUrl} target="_blank" rel="noreferrer" className="font-semibold text-emerald-700 dark:text-emerald-400 hover:underline">
+                    Open the original record ↗
+                  </a>
+                </>
+              )}
+            </div>
+          )}
           {book.chapters?.map((ch) => (
             <Link
               key={ch.id}

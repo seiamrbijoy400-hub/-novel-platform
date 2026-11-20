@@ -1,31 +1,20 @@
-import { Book, AccessType, TextDirection } from '../types/book';
+import { Book } from '../types/book';
 import { MOCK_BOOKS } from '../data/mockBooks';
-
-interface OpenLibraryDoc {
-  key: string;
-  title: string;
-  author_name?: string[];
-  first_publish_year?: number;
-  language?: string[];
-  cover_i?: number;
-  subject?: string[];
-  publisher?: string[];
-  isbn?: string[];
-  ebook_access?: string;
-}
 
 type CatalogListener = (books: Book[]) => void;
 
-const CACHE_KEY = 'novela_catalog_v1';
+const CACHE_KEY = 'novela_catalog_v2';
 const CACHE_TTL_MS = 10 * 60 * 1000;
-const REQUEST_TIMEOUT_MS = 4000;
+const PROXY_TIMEOUT_MS = 16000;
+const SNAPSHOT_TIMEOUT_MS = 6000;
 
 /**
  * Single source of truth for the book catalog.
  *
- * The verified local catalog is always available immediately. Live providers are
- * queried in the background and merged afterwards, so a slow or offline API can
- * never leave the UI empty or stuck on a loading skeleton.
+ * - The verified local catalog is available synchronously, so the UI is never empty.
+ * - Real books are fetched through the local `/api/books` proxy (served by Vite,
+ *   which can reach Open Library even when the WebView cannot) with a bundled
+ *   snapshot at `/api/books.json` as fallback.
  */
 export class CatalogService {
   private static listeners = new Set<CatalogListener>();
@@ -39,9 +28,14 @@ export class CatalogService {
     return this.catalog;
   }
 
+  /** Real books only (from Open Library), excluding verified local demo titles. */
+  public static getRealBooks(): Book[] {
+    return this.getSnapshot().filter(isRealBook);
+  }
+
   /**
-   * Kept for backwards compatibility with the pages. Resolves immediately with
-   * the local catalog; background hydration is started as a side effect.
+   * Kept for backwards compatibility with pages. Resolves immediately with the
+   * local catalog; background hydration is started as a side effect.
    */
   public static async getAllBooks(): Promise<Book[]> {
     void this.hydrate();
@@ -54,7 +48,7 @@ export class CatalogService {
     return () => this.listeners.delete(listener);
   }
 
-  /** Hydrate from live providers at most once at a time. */
+  /** Hydrate from the local API/snapshot at most once at a time. */
   public static hydrate(force = false): Promise<Book[]> {
     if (this.hydration) return this.hydration;
     if (this.hydrated && !force) return Promise.resolve(this.catalog);
@@ -68,7 +62,7 @@ export class CatalogService {
         return books;
       })
       .catch(err => {
-        console.warn('Catalog hydration skipped; using verified local catalog.', err);
+        console.warn('Catalog hydration skipped; using cached/local catalog.', err);
         return this.catalog;
       })
       .finally(() => {
@@ -128,126 +122,39 @@ export class CatalogService {
     });
   }
 
-  // ── Live provider hydration ───────────────────────────────────────────────
+  // ── Real-book hydration (local API + bundled snapshot) ────────────────────
 
   private static async fetchAndMerge(): Promise<Book[]> {
-    const [nearEast, europe] = await Promise.allSettled([
-      this.fetchFromOpenLibrary('language:(ben OR ara OR hin OR urd)', 12),
-      this.fetchFromOpenLibrary('language:(spa OR eng OR fra OR deu)', 12),
+    const [proxy, snapshot] = await Promise.allSettled([
+      this.fetchJson<Book[] | { books?: Book[] }>('/api/books', PROXY_TIMEOUT_MS),
+      this.fetchJson<Book[] | { books?: Book[] }>('/api/books.json', SNAPSHOT_TIMEOUT_MS),
     ]);
 
     const liveBooks: Book[] = [];
-    if (nearEast.status === 'fulfilled') liveBooks.push(...nearEast.value);
-    if (europe.status === 'fulfilled') liveBooks.push(...europe.value);
+    collectBooks(proxy, liveBooks);
+    collectBooks(snapshot, liveBooks);
 
-    // Local verified books always win and are never removed by live data.
+    // Local verified books are always kept and take precedence on duplicates.
     return this.deduplicateBooks([...MOCK_BOOKS, ...liveBooks]);
   }
 
-  /**
-   * Open Library search. The query is intentionally simple: complex OR + range
-   * queries make the public API return HTTP 500, so year filtering is local.
-   */
-  private static async fetchFromOpenLibrary(query: string, limit: number): Promise<Book[]> {
-    try {
-      const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${limit}`;
-      const data = await this.fetchJson<{ docs?: OpenLibraryDoc[] }>(url);
-      const docs = data.docs || [];
-
-      return docs
-        .filter(doc =>
-          doc.title &&
-          doc.author_name &&
-          doc.author_name.length > 0 &&
-          (doc.first_publish_year === undefined || doc.first_publish_year >= 1990)
-        )
-        .map(doc => this.mapOpenLibraryDoc(doc));
-    } catch (err) {
-      console.warn('Open Library hydration failed:', err);
-      return [];
-    }
-  }
-
-  private static mapOpenLibraryDoc(doc: OpenLibraryDoc): Book {
-    const authorName = doc.author_name![0];
-    const year = doc.first_publish_year || 2020;
-    const slug = this.slugify(`${doc.title}-${year}`);
-    const langCode = doc.language ? this.normalizeLangCode(doc.language[0]) : 'en';
-    const direction: TextDirection = ['ar', 'ur', 'he', 'fa'].includes(langCode) ? 'rtl' : 'ltr';
-    const accessType: AccessType = doc.ebook_access === 'public' ? 'full_book' : 'preview_only';
-    const coverUrl = doc.cover_i
-      ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-      : `https://picsum.photos/seed/${encodeURIComponent(slug)}/400/600`;
-
-    return {
-      id: `ol-${doc.key.replace('/works/', '')}`,
-      slug,
-      isbn13: doc.isbn ? doc.isbn[0] : undefined,
-      title: doc.title,
-      languageId: langCode,
-      direction,
-      author: {
-        id: `auth-${this.slugify(authorName)}`,
-        slug: this.slugify(authorName),
-        name: authorName,
-        biography: `Author indexed on Open Library. Published works include ${doc.title}.`,
-        photoUrl: `https://picsum.photos/seed/${encodeURIComponent(authorName)}/300/300`,
-        country: 'International',
-        verified: true,
-        totalNovels: 1,
-      },
-      publisher: doc.publisher ? {
-        id: `pub-${this.slugify(doc.publisher[0])}`,
-        name: doc.publisher[0],
-        countryCode: 'GLOBAL',
-        partnerSince: '2020',
-      } : undefined,
-      publicationDate: `${year}-01-01`,
-      publicationYear: year,
-      genres: doc.subject ? doc.subject.slice(0, 2) : ['Contemporary Fiction'],
-      synopsis: `Published in ${year}. Complete literary record indexed via Open Library digital database.`,
-      coverImageUrl: coverUrl,
-      completionStatus: 'completed',
-      accessType,
-      fullBookAvailable: accessType === 'full_book',
-      contentRating: 'General Audience',
-      moderationStatus: 'approved',
-      isAdultRestricted: false,
-      sourceProviderCode: 'open_library',
-      sourceProviderName: 'Open Library Digital Archive',
-      rightsHolderName: doc.publisher ? doc.publisher[0] : authorName,
-      allowedTerritories: ['GLOBAL'],
-      ratingAverage: 4.7,
-      ratingCount: 180,
-      totalChapters: 3,
-      estimatedReadingMinutes: 30,
-      chapters: accessType === 'full_book' ? [{
-        id: `ch-ol-1`,
-        chapterIndex: 1,
-        title: 'Chapter 1 — Opening',
-        wordCount: 450,
-        content: `Authorized digital edition of "${doc.title}". Published by ${doc.publisher?.[0] || 'International Press'} in ${year}.\n\nFull text cataloged under Open Library public digital access program.`
-      }] : [],
-    };
-  }
-
   /** fetch with a hard deadline so a stalled request can never block the UI. */
-  private static async fetchJson<T>(url: string): Promise<T> {
+  private static async fetchJson<T>(url: string, timeoutMs: number): Promise<T> {
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     const deadline = new Promise<never>((_, reject) => {
       timer = setTimeout(() => {
         controller.abort();
         reject(new Error(`Request timed out: ${url}`));
-      }, REQUEST_TIMEOUT_MS);
+      }, timeoutMs);
     });
 
     try {
       const response = await Promise.race([
-        fetch(url, { signal: controller.signal }),
+        fetch(url, { signal: controller.signal, headers: { Accept: 'application/json' } }),
         deadline,
       ]);
-      if (!response.ok) throw new Error(`Provider returned HTTP ${response.status}`);
+      if (!response.ok) throw new Error(`Request failed with HTTP ${response.status}`);
       return await Promise.race([response.json() as Promise<T>, deadline]);
     } finally {
       if (timer) clearTimeout(timer);
@@ -267,7 +174,7 @@ export class CatalogService {
         Array.isArray(parsed.books) &&
         parsed.books.length > 0
       ) {
-        return this.deduplicateBooks([...MOCK_BOOKS, ...parsed.books]);
+        return this.deduplicateBooks([...MOCK_BOOKS, ...parsed.books.filter(isRealBook)]);
       }
     } catch {
       // Corrupt or unavailable storage: fall back to the verified local catalog.
@@ -277,7 +184,10 @@ export class CatalogService {
 
   private static saveCachedCatalog(books: Book[]): void {
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), books }));
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ savedAt: Date.now(), books: books.filter(isRealBook) })
+      );
     } catch {
       // Storage may be full or disabled; the in-memory catalog still works.
     }
@@ -292,27 +202,21 @@ export class CatalogService {
       return true;
     });
   }
+}
 
-  private static slugify(text: string): string {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '')
-      .slice(0, 60);
-  }
+function isRealBook(book: Book): boolean {
+  return book.sourceProviderCode === 'open_library_live';
+}
 
-  private static normalizeLangCode(raw: string): string {
-    const map: Record<string, string> = {
-      ben: 'bn', bengali: 'bn',
-      ara: 'ar', arabic: 'ar',
-      hin: 'hi', hindi: 'hi',
-      urd: 'ur', urdu: 'ur',
-      spa: 'es', spanish: 'es',
-      fra: 'fr', french: 'fr',
-      eng: 'en', english: 'en',
-      zho: 'zh', chinese: 'zh',
-      deu: 'de', german: 'de',
-    };
-    return map[raw.toLowerCase()] || raw.slice(0, 2);
+function collectBooks(
+  result: PromiseSettledResult<Book[] | { books?: Book[] }>,
+  target: Book[]
+): void {
+  if (result.status !== 'fulfilled') return;
+  const value = result.value;
+  if (Array.isArray(value)) {
+    target.push(...value);
+  } else if (value && Array.isArray(value.books)) {
+    target.push(...value.books);
   }
 }

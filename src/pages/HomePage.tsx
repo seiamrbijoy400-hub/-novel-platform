@@ -36,6 +36,9 @@ export const HomePage: React.FC = () => {
   // Multilingual spotlight (Arabic, Urdu, Bengali, Hindi)
   const vernacularBooks = books.filter(b => ['bn', 'ar', 'ur', 'hi'].includes(b.languageId));
 
+  // Real catalog records fetched from Open Library through the local API.
+  const realBooks = books.filter(b => b.sourceProviderCode === 'open_library_live');
+
   // Last read book for instant resume
   const lastReadId = Object.values(readingProgress)
     .sort((a, b) => b.lastReadAt.localeCompare(a.lastReadAt))[0]?.bookId;
@@ -151,7 +154,46 @@ export const HomePage: React.FC = () => {
         </section>
       )}
 
-      {/* 3. MULTILINGUAL SELECTOR BAR */}
+      {/* 3. REAL BOOKS FROM OPEN LIBRARY */}
+      <section className="space-y-4">
+        <div className="border-b border-stone-200 dark:border-night-border pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2 text-[11px] font-mono tracking-widest uppercase text-stone-500 dark:text-stone-400">
+              <Globe className="w-3.5 h-3.5" />
+              <span>Live Catalog · Open Library</span>
+            </div>
+            <h2 className="font-serif font-bold text-xl sm:text-2xl text-stone-950 dark:text-stone-50 mt-1">
+              Real Books from External Sources
+            </h2>
+            <p className="text-xs text-stone-500 dark:text-stone-400">
+              {realBooks.length > 0
+                ? `${realBooks.length} real catalog records retrieved from Open Library. Open a title to view its full record.`
+                : 'Connecting to Open Library… the local verified catalog is shown above.'}
+            </p>
+          </div>
+          <Link
+            to="/explore"
+            className="text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 inline-flex items-center gap-1"
+          >
+            <span>Browse all sources</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        {realBooks.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {realBooks.slice(0, 8).map(book => (
+              <BookCard key={book.id} book={book} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-dashed border-stone-300 dark:border-night-border p-8 text-center text-xs text-stone-500 dark:text-stone-400">
+            No live records yet. They load automatically from the local API; use “Explore” to see the verified collection.
+          </div>
+        )}
+      </section>
+
+      {/* 4. MULTILINGUAL SELECTOR BAR */}
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 dark:border-night-border pb-3">
           <div>
@@ -226,7 +268,7 @@ export const HomePage: React.FC = () => {
         )}
       </section>
 
-      {/* 4. VERNACULAR & RTL HIGHLIGHT ROW */}
+      {/* 5. VERNACULAR & RTL HIGHLIGHT ROW */}
       <section className="space-y-4">
         <div className="border-b border-stone-200 dark:border-night-border pb-3">
           <div className="flex items-center gap-2 text-[11px] font-mono tracking-widest uppercase text-stone-500 dark:text-stone-400">
@@ -248,7 +290,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. ETHICAL PUBLISHING GUARANTEE */}
+      {/* 6. ETHICAL PUBLISHING GUARANTEE */}
       <section className="rounded-2xl border border-stone-200 dark:border-night-border bg-stone-50 dark:bg-night-surface p-6 sm:p-8">
         <div className="max-w-2xl space-y-2">
           <span className="text-[10px] font-mono tracking-widest uppercase text-stone-500 dark:text-stone-400">

@@ -10,7 +10,7 @@ export const ExplorePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
-  const [fullBookOnly, setFullBookOnly] = useState<boolean>(true);
+  const [fullBookOnly, setFullBookOnly] = useState<boolean>(false);
   const [selectedYear, setSelectedYear] = useState<string>('all');
 
   const filteredBooks = useMemo(() => {
@@ -45,7 +45,7 @@ export const ExplorePage: React.FC = () => {
     setSearchQuery('');
     setSelectedLanguage('all');
     setSelectedGenre('all');
-    setFullBookOnly(true);
+    setFullBookOnly(false);
     setSelectedYear('all');
   };
 

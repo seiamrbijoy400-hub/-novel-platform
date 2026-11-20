@@ -69,6 +69,8 @@ export interface Book {
   totalChapters: number;
   estimatedReadingMinutes: number;
   chapters?: Chapter[];
+  /** Original record on the source provider, when this is a real catalog import. */
+  sourceUrl?: string;
 }
 
 export interface ReadingProgress {

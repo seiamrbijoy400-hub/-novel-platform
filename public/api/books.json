@@ -1,0 +1,1405 @@
+{
+  "savedAt": "2026-11-20T09:02:58.037Z",
+  "books": [
+    {
+      "id": "ol-OL17590212W",
+      "slug": "the-subtle-art-of-not-giving-a-f-ck-2016-ol17590212w",
+      "isbn13": "0062457721",
+      "title": "The Subtle Art of Not Giving a F*ck",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-mark-manson",
+        "slug": "mark-manson",
+        "name": "Mark Manson",
+        "biography": "Author indexed on Open Library. Published works include The Subtle Art of Not Giving a F*ck.",
+        "photoUrl": "https://picsum.photos/seed/Mark%20Manson/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-harperluxe",
+        "name": "HarperLuxe",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "2016-01-01",
+      "publicationYear": 2016,
+      "genres": [
+        "Self-realization",
+        "Conduct of life"
+      ],
+      "synopsis": "Published in 2016. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/8231990",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "HarperLuxe",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL17590212W"
+    },
+    {
+      "id": "ol-OL82586W",
+      "slug": "harry-potter-and-the-deathly-hallows-2007-ol82586w",
+      "isbn13": "9789604532827",
+      "title": "Harry Potter and the Deathly Hallows",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Deathly Hallows.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-large-print-press",
+        "name": "Large Print Press",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "2007-01-01",
+      "publicationYear": 2007,
+      "genres": [
+        "the Elder Wand",
+        "children's books"
+      ],
+      "synopsis": "Published in 2007. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/15158660",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Large Print Press",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82586W"
+    },
+    {
+      "id": "ol-OL82548W",
+      "slug": "harry-potter-and-the-order-of-the-phoenix-2003-ol82548w",
+      "isbn13": "9783551313157",
+      "title": "Harry Potter and the Order of the Phoenix",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Order of the Phoenix.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-warner-books",
+        "name": "Warner Books",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "2003-01-01",
+      "publicationYear": 2003,
+      "genres": [
+        "Children's Books/Ages 9-12 Fiction",
+        "Witches and warlocks"
+      ],
+      "synopsis": "Published in 2003. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/15158666",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Warner Books",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82548W"
+    },
+    {
+      "id": "ol-OL82560W",
+      "slug": "harry-potter-and-the-goblet-of-fire-2000-ol82560w",
+      "isbn13": "0747574502",
+      "title": "Harry Potter and the Goblet of Fire",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Goblet of Fire.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-people-s-literature-publishing-house",
+        "name": "People's Literature Publishing House",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "2000-01-01",
+      "publicationYear": 2000,
+      "genres": [
+        "orphans",
+        "foster homes"
+      ],
+      "synopsis": "Published in 2000. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/12059372",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "People's Literature Publishing House",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82560W"
+    },
+    {
+      "id": "ol-OL82536W",
+      "slug": "harry-potter-and-the-prisoner-of-azkaban-1999-ol82536w",
+      "isbn13": "9780317456394",
+      "title": "Harry Potter and the Prisoner of Azkaban",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Prisoner of Azkaban.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-large-print-press",
+        "name": "Large Print Press",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1999-01-01",
+      "publicationYear": 1999,
+      "genres": [
+        "Fantasy fiction",
+        "orphans"
+      ],
+      "synopsis": "Published in 1999. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/10580435",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Large Print Press",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82536W"
+    },
+    {
+      "id": "ol-OL1968368W",
+      "slug": "the-48-laws-of-power-1998-ol1968368w",
+      "isbn13": "9786074004304",
+      "title": "The 48 Laws of Power",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-robert-greene",
+        "slug": "robert-greene",
+        "name": "Robert Greene",
+        "biography": "Author indexed on Open Library. Published works include The 48 Laws of Power.",
+        "photoUrl": "https://picsum.photos/seed/Robert%20Greene/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-profile-books-limited",
+        "name": "Profile Books Limited",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1998-01-01",
+      "publicationYear": 1998,
+      "genres": [
+        "Business",
+        "Control (Psychology)"
+      ],
+      "synopsis": "Published in 1998. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/6424160",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Profile Books Limited",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL1968368W"
+    },
+    {
+      "id": "ol-OL82537W",
+      "slug": "harry-potter-and-the-chamber-of-secrets-1998-ol82537w",
+      "isbn13": "9783551559029",
+      "title": "Harry Potter and the Chamber of Secrets",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Chamber of Secrets.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-per-noste",
+        "name": "PER NOSTE",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1998-01-01",
+      "publicationYear": 1998,
+      "genres": [
+        "series:Harry_Potter",
+        "Fantasy fiction"
+      ],
+      "synopsis": "Published in 1998. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/15158664",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "PER NOSTE",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82537W"
+    },
+    {
+      "id": "ol-OL82563W",
+      "slug": "harry-potter-and-the-philosopher-s-stone-1997-ol82563w",
+      "isbn13": "8000009951",
+      "title": "Harry Potter and the Philosopher's Stone",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-j-k-rowling",
+        "slug": "j-k-rowling",
+        "name": "J. K. Rowling",
+        "biography": "Author indexed on Open Library. Published works include Harry Potter and the Philosopher's Stone.",
+        "photoUrl": "https://picsum.photos/seed/J.%20K.%20Rowling/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-u-s-a-bloomsbury-publishing-plc",
+        "name": "U.S.A.: Bloomsbury Publishing PLC",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1997-01-01",
+      "publicationYear": 1997,
+      "genres": [
+        "series:Harry_Potter",
+        "Ghosts"
+      ],
+      "synopsis": "Published in 1997. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/15155833",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "U.S.A.: Bloomsbury Publishing PLC",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL82563W"
+    },
+    {
+      "id": "ol-OL2010879W",
+      "slug": "rich-dad-poor-dad-1990-ol2010879w",
+      "isbn13": "9788550801483",
+      "title": "Rich Dad, Poor Dad",
+      "languageId": "hi",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-robert-t-kiyosaki",
+        "slug": "robert-t-kiyosaki",
+        "name": "Robert T. Kiyosaki",
+        "biography": "Author indexed on Open Library. Published works include Rich Dad, Poor Dad.",
+        "photoUrl": "https://picsum.photos/seed/Robert%20T.%20Kiyosaki/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-warner-books",
+        "name": "Warner Books",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1990-01-01",
+      "publicationYear": 1990,
+      "genres": [
+        "Rich people",
+        "Personal Finance"
+      ],
+      "synopsis": "Published in 1990. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/8315603",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Warner Books",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL2010879W"
+    },
+    {
+      "id": "ol-OL796465W",
+      "slug": "o-alquimista-1988-ol796465w",
+      "isbn13": "9788408033431",
+      "title": "O Alquimista",
+      "languageId": "ur",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-paulo-coelho",
+        "slug": "paulo-coelho",
+        "name": "Paulo Coelho",
+        "biography": "Author indexed on Open Library. Published works include O Alquimista.",
+        "photoUrl": "https://picsum.photos/seed/Paulo%20Coelho/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-thorsons",
+        "name": "Thorsons",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1988-01-01",
+      "publicationYear": 1988,
+      "genres": [
+        "Translations into Indonesian",
+        "Voyages and travels"
+      ],
+      "synopsis": "Published in 1988. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/7414780",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Thorsons",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL796465W"
+    },
+    {
+      "id": "ol-OL55806W",
+      "slug": "the-power-of-your-subconscious-mind-1963-ol55806w",
+      "isbn13": "9781440637872",
+      "title": "The Power of Your Subconscious Mind",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-joseph-murphy",
+        "slug": "joseph-murphy",
+        "name": "Joseph Murphy",
+        "biography": "Author indexed on Open Library. Published works include The Power of Your Subconscious Mind.",
+        "photoUrl": "https://picsum.photos/seed/Joseph%20Murphy/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-martino-publishing",
+        "name": "Martino Publishing",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1963-01-01",
+      "publicationYear": 1963,
+      "genres": [
+        "Self-Help",
+        "Psychology"
+      ],
+      "synopsis": "Published in 1963. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/6553019",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Martino Publishing",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL55806W"
+    },
+    {
+      "id": "ol-OL3140822W",
+      "slug": "to-kill-a-mockingbird-1960-ol3140822w",
+      "isbn13": "0434413003",
+      "title": "To Kill a Mockingbird",
+      "languageId": "ur",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-harper-lee",
+        "slug": "harper-lee",
+        "name": "Harper Lee",
+        "biography": "Author indexed on Open Library. Published works include To Kill a Mockingbird.",
+        "photoUrl": "https://picsum.photos/seed/Harper%20Lee/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-warner-books",
+        "name": "Warner Books",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1960-01-01",
+      "publicationYear": 1960,
+      "genres": [
+        "fiction",
+        "fiction classics"
+      ],
+      "synopsis": "Published in 1960. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/14351077",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Warner Books",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL3140822W"
+    },
+    {
+      "id": "ol-OL483391W",
+      "slug": "charlotte-s-web-1952-ol483391w",
+      "isbn13": "1663611491",
+      "title": "Charlotte's Web",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-e-b-white",
+        "slug": "e-b-white",
+        "name": "E. B. White",
+        "biography": "Author indexed on Open Library. Published works include Charlotte's Web.",
+        "photoUrl": "https://picsum.photos/seed/E.%20B.%20White/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-editorial-noguer",
+        "name": "Editorial Noguer",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1952-01-01",
+      "publicationYear": 1952,
+      "genres": [
+        "Farm life",
+        "Animals"
+      ],
+      "synopsis": "Published in 1952. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/8461797",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Editorial Noguer",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL483391W"
+    },
+    {
+      "id": "ol-OL1168083W",
+      "slug": "nineteen-eighty-four-1949-ol1168083w",
+      "isbn13": "1787302547",
+      "title": "Nineteen Eighty-Four",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-george-orwell",
+        "slug": "george-orwell",
+        "name": "George Orwell",
+        "biography": "Author indexed on Open Library. Published works include Nineteen Eighty-Four.",
+        "photoUrl": "https://picsum.photos/seed/George%20Orwell/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-books-on-tape-inc",
+        "name": "Books on Tape, Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1949-01-01",
+      "publicationYear": 1949,
+      "genres": [
+        "futurology",
+        "censorship"
+      ],
+      "synopsis": "Published in 1949. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/9267242",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Books on Tape, Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL1168083W"
+    },
+    {
+      "id": "ol-OL1168007W",
+      "slug": "animal-farm-1945-ol1168007w",
+      "isbn13": "9798550366127",
+      "title": "Animal Farm",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-george-orwell",
+        "slug": "george-orwell",
+        "name": "George Orwell",
+        "biography": "Author indexed on Open Library. Published works include Animal Farm.",
+        "photoUrl": "https://picsum.photos/seed/George%20Orwell/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-ediciones-americanas",
+        "name": "Ediciones Americanas",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1945-01-01",
+      "publicationYear": 1945,
+      "genres": [
+        "British and Irish fiction (fictional works by one author)",
+        "political satire"
+      ],
+      "synopsis": "Published in 1945. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/11261770",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Ediciones Americanas",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL1168007W"
+    },
+    {
+      "id": "ol-OL527464W",
+      "slug": "think-and-grow-rich-1937-ol527464w",
+      "isbn13": "9781644730041",
+      "title": "Think and Grow Rich",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-napoleon-hill",
+        "slug": "napoleon-hill",
+        "name": "Napoleon Hill",
+        "biography": "Author indexed on Open Library. Published works include Think and Grow Rich.",
+        "photoUrl": "https://picsum.photos/seed/Napoleon%20Hill/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-textbook-classics",
+        "name": "Textbook Classics",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1937-01-01",
+      "publicationYear": 1937,
+      "genres": [
+        "Wealth",
+        "Success"
+      ],
+      "synopsis": "Published in 1937. Real catalog record retrieved live from Open Library.",
+      "coverImageUrl": "/api/cover/14542536",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Discovery",
+      "rightsHolderName": "Textbook Classics",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL527464W"
+    },
+    {
+      "id": "ol-OL8165007W",
+      "slug": "the-richest-man-in-babylon-1926-ol8165007w",
+      "isbn13": "9781628614770",
+      "title": "The Richest Man in Babylon",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-george-s-clason",
+        "slug": "george-s-clason",
+        "name": "George S. Clason",
+        "biography": "Author indexed on Open Library. Published works include The Richest Man in Babylon.",
+        "photoUrl": "https://picsum.photos/seed/George%20S.%20Clason/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-createspace",
+        "name": "CreateSpace",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1926-01-01",
+      "publicationYear": 1926,
+      "genres": [
+        "Business ethics",
+        "Personal Finance"
+      ],
+      "synopsis": "Published in 1926. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/10491331",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "CreateSpace",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL8165007W"
+    },
+    {
+      "id": "ol-OL244537W",
+      "slug": "the-art-of-war-1900-ol244537w",
+      "isbn13": "1841593850",
+      "title": "The Art of War",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-sun-tzu",
+        "slug": "sun-tzu",
+        "name": "孙武 (Sun Tzu)",
+        "biography": "Author indexed on Open Library. Published works include The Art of War.",
+        "photoUrl": "https://picsum.photos/seed/%E5%AD%99%E6%AD%A6%20(Sun%20Tzu)/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-sterling-publishing-co-inc",
+        "name": "Sterling Publishing Co., Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1900-01-01",
+      "publicationYear": 1900,
+      "genres": [
+        "Open Library Staff Picks",
+        "Early works to 1800"
+      ],
+      "synopsis": "Published in 1900. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/4849549",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Sterling Publishing Co., Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL244537W"
+    },
+    {
+      "id": "ol-OL8193416W",
+      "slug": "the-picture-of-dorian-gray-1890-ol8193416w",
+      "isbn13": "9781505314984",
+      "title": "The Picture of Dorian Gray",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-oscar-wilde",
+        "slug": "oscar-wilde",
+        "name": "Oscar Wilde",
+        "biography": "Author indexed on Open Library. Published works include The Picture of Dorian Gray.",
+        "photoUrl": "https://picsum.photos/seed/Oscar%20Wilde/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-bibliophilepro",
+        "name": "BibliophilePro",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1890-01-01",
+      "publicationYear": 1890,
+      "genres": [
+        "British and irish fiction (fictional works by one author)",
+        "Conduct of life, fiction"
+      ],
+      "synopsis": "Published in 1890. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/14314858",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "BibliophilePro",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL8193416W"
+    },
+    {
+      "id": "ol-OL53908W",
+      "slug": "adventures-of-huckleberry-finn-1876-ol53908w",
+      "isbn13": "1519764367",
+      "title": "Adventures of Huckleberry Finn",
+      "languageId": "hi",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-mark-twain",
+        "slug": "mark-twain",
+        "name": "Mark Twain",
+        "biography": "Author indexed on Open Library. Published works include Adventures of Huckleberry Finn.",
+        "photoUrl": "https://picsum.photos/seed/Mark%20Twain/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-whitman-publishing-company",
+        "name": "Whitman Publishing Company",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1876-01-01",
+      "publicationYear": 1876,
+      "genres": [
+        "adventure and adventurers",
+        "Adventure stories"
+      ],
+      "synopsis": "Published in 1876. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/8157718",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Whitman Publishing Company",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL53908W"
+    },
+    {
+      "id": "ol-OL166894W",
+      "slug": "1866-ol166894w",
+      "isbn13": "9798442958669",
+      "title": "Преступление и наказание",
+      "languageId": "hi",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-fi-dor-dostoievski",
+        "slug": "fi-dor-dostoievski",
+        "name": "Fiódor Dostoievski",
+        "biography": "Author indexed on Open Library. Published works include Преступление и наказание.",
+        "photoUrl": "https://picsum.photos/seed/Fi%C3%B3dor%20Dostoievski/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-modern-library-random-house",
+        "name": "Modern Library / Random House",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1866-01-01",
+      "publicationYear": 1866,
+      "genres": [
+        "English Translations",
+        "Russian literature"
+      ],
+      "synopsis": "Published in 1866. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/9411873",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Modern Library / Random House",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL166894W"
+    },
+    {
+      "id": "ol-OL138052W",
+      "slug": "alice-s-adventures-in-wonderland-1865-ol138052w",
+      "isbn13": "1676166793",
+      "title": "Alice's Adventures in Wonderland",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-lewis-carroll",
+        "slug": "lewis-carroll",
+        "name": "Lewis Carroll",
+        "biography": "Author indexed on Open Library. Published works include Alice's Adventures in Wonderland.",
+        "photoUrl": "https://picsum.photos/seed/Lewis%20Carroll/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-sterling-publishing-co-inc",
+        "name": "Sterling Publishing Co., Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1865-01-01",
+      "publicationYear": 1865,
+      "genres": [
+        "Alice (fictitious character : carroll), fiction",
+        "British and irish fiction (fictional works by one author)"
+      ],
+      "synopsis": "Published in 1865. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/10527843",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Sterling Publishing Co., Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL138052W"
+    },
+    {
+      "id": "ol-OL29983W",
+      "slug": "little-women-1848-ol29983w",
+      "isbn13": "1517495172",
+      "title": "Little Women",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-louisa-may-alcott",
+        "slug": "louisa-may-alcott",
+        "name": "Louisa May Alcott",
+        "biography": "Author indexed on Open Library. Published works include Little Women.",
+        "photoUrl": "https://picsum.photos/seed/Louisa%20May%20Alcott/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-moby-books",
+        "name": "Moby Books",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1848-01-01",
+      "publicationYear": 1848,
+      "genres": [
+        "Romans",
+        "Jeunes filles"
+      ],
+      "synopsis": "Published in 1848. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/8775559",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Moby Books",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL29983W"
+    },
+    {
+      "id": "ol-OL21177W",
+      "slug": "wuthering-heights-1846-ol21177w",
+      "isbn13": "9781524874902",
+      "title": "Wuthering Heights",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-emily-bronte",
+        "slug": "emily-bronte",
+        "name": "Emily Brontë",
+        "biography": "Author indexed on Open Library. Published works include Wuthering Heights.",
+        "photoUrl": "https://picsum.photos/seed/Emily%20Bronte%CC%88/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-sterling-publishing-co-inc",
+        "name": "Sterling Publishing Co., Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1846-01-01",
+      "publicationYear": 1846,
+      "genres": [
+        "form:novel",
+        "genre:tragedy"
+      ],
+      "synopsis": "Published in 1846. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/12818862",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Sterling Publishing Co., Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL21177W"
+    },
+    {
+      "id": "ol-OL66554W",
+      "slug": "pride-and-prejudice-1813-ol66554w",
+      "isbn13": "9781013815584",
+      "title": "Pride and Prejudice",
+      "languageId": "hi",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-jane-austen",
+        "slug": "jane-austen",
+        "name": "Jane Austen",
+        "biography": "Author indexed on Open Library. Published works include Pride and Prejudice.",
+        "photoUrl": "https://picsum.photos/seed/Jane%20Austen/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-sterling-publishing-co-inc",
+        "name": "Sterling Publishing Co., Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1813-01-01",
+      "publicationYear": 1813,
+      "genres": [
+        "Fiction, Romance, Historical, Regency",
+        "British and Irish fiction (fictional works by one author)"
+      ],
+      "synopsis": "Published in 1813. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/14348537",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Sterling Publishing Co., Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL66554W"
+    },
+    {
+      "id": "ol-OL9170454W",
+      "slug": "hamlet-1603-ol9170454w",
+      "isbn13": "1795332646",
+      "title": "Hamlet",
+      "languageId": "ar",
+      "direction": "rtl",
+      "author": {
+        "id": "auth-william-shakespeare",
+        "slug": "william-shakespeare",
+        "name": "William Shakespeare",
+        "biography": "Author indexed on Open Library. Published works include Hamlet.",
+        "photoUrl": "https://picsum.photos/seed/William%20Shakespeare/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-sterling-publishing-co-inc",
+        "name": "Sterling Publishing Co., Inc.",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1603-01-01",
+      "publicationYear": 1603,
+      "genres": [
+        "performing arts",
+        "Stage history"
+      ],
+      "synopsis": "Published in 1603. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/8281954",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Sterling Publishing Co., Inc.",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL9170454W"
+    },
+    {
+      "id": "ol-OL362427W",
+      "slug": "romeo-and-juliet-1597-ol362427w",
+      "isbn13": "1518614868",
+      "title": "Romeo and Juliet",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-william-shakespeare",
+        "slug": "william-shakespeare",
+        "name": "William Shakespeare",
+        "biography": "Author indexed on Open Library. Published works include Romeo and Juliet.",
+        "photoUrl": "https://picsum.photos/seed/William%20Shakespeare/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-printed-for-w-brien-and-r-james",
+        "name": "printed for W. Brien, and R. James",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1597-01-01",
+      "publicationYear": 1597,
+      "genres": [
+        "Classical Literature",
+        "British and irish drama (dramatic works by one author)"
+      ],
+      "synopsis": "Published in 1597. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/8257991",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "printed for W. Brien, and R. James",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL362427W"
+    },
+    {
+      "id": "ol-OL17732W",
+      "slug": "bible-1200-ol17732w",
+      "isbn13": "9780785255550",
+      "title": "Bible",
+      "languageId": "bn",
+      "direction": "ltr",
+      "author": {
+        "id": "auth-bible",
+        "slug": "bible",
+        "name": "Bible",
+        "biography": "Author indexed on Open Library. Published works include Bible.",
+        "photoUrl": "https://picsum.photos/seed/Bible/300/300",
+        "country": "International",
+        "verified": true,
+        "totalNovels": 1
+      },
+      "publisher": {
+        "id": "pub-printed-by-sarah-hodgscn",
+        "name": "Printed by Sarah Hodgscn",
+        "countryCode": "GLOBAL",
+        "partnerSince": "2020"
+      },
+      "publicationDate": "1200-01-01",
+      "publicationYear": 1200,
+      "genres": [
+        "Bible",
+        "Religion"
+      ],
+      "synopsis": "Published in 1200. Real catalog record retrieved live from Open Library with public digital access.",
+      "coverImageUrl": "/api/cover/12707846",
+      "completionStatus": "completed",
+      "accessType": "preview_only",
+      "fullBookAvailable": false,
+      "contentRating": "General Audience",
+      "moderationStatus": "approved",
+      "isAdultRestricted": false,
+      "sourceProviderCode": "open_library_live",
+      "sourceProviderName": "Open Library · Public Access",
+      "rightsHolderName": "Printed by Sarah Hodgscn",
+      "allowedTerritories": [
+        "GLOBAL"
+      ],
+      "ratingAverage": 4.5,
+      "ratingCount": 0,
+      "totalChapters": 0,
+      "estimatedReadingMinutes": 0,
+      "chapters": [],
+      "sourceUrl": "https://openlibrary.org/works/OL17732W"
+    }
+  ]
+}

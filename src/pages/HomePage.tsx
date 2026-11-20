@@ -39,8 +39,10 @@ export const HomePage: React.FC = () => {
   // Real catalog records fetched from Open Library through the local API.
   const realBooks = books.filter(b => b.sourceProviderCode === 'open_library_live');
 
-  // Last read book for instant resume
+  // Last read book for instant resume. Stored progress from older versions may
+  // miss fields, so validate before sorting instead of crashing the page.
   const lastReadId = Object.values(readingProgress)
+    .filter(p => p && typeof p.lastReadAt === 'string' && typeof p.bookId === 'string')
     .sort((a, b) => b.lastReadAt.localeCompare(a.lastReadAt))[0]?.bookId;
   const lastReadBook = books.find(b => b.id === lastReadId);
   const lastReadData = lastReadBook ? readingProgress[lastReadBook.id] : null;

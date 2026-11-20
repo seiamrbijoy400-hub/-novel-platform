@@ -18,6 +18,65 @@ interface LibraryContextType {
 
 const LibraryContext = createContext<LibraryContextType | undefined>(undefined);
 
+const DEFAULT_PROGRESS: Record<string, ReadingProgress> = {
+  'book-1': {
+    bookId: 'book-1',
+    currentChapterIndex: 1,
+    progressionPercentage: 25.0,
+    lastReadAt: new Date().toISOString(),
+  },
+};
+
+/**
+ * Progress written by older builds can be missing fields (for example
+ * `lastReadAt`), which used to crash the home page into a blank screen.
+ * Normalise whatever is in storage instead of trusting its shape.
+ */
+function loadProgress(): Record<string, ReadingProgress> {
+  const stored = readStored<Record<string, unknown>>('novela_progress', DEFAULT_PROGRESS);
+  if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return DEFAULT_PROGRESS;
+
+  const clean: Record<string, ReadingProgress> = {};
+  for (const [id, value] of Object.entries(stored)) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) continue;
+    const entry = value as Partial<ReadingProgress>;
+    if (typeof entry.currentChapterIndex !== 'number') continue;
+    clean[id] = {
+      bookId: typeof entry.bookId === 'string' ? entry.bookId : id,
+      currentChapterIndex: entry.currentChapterIndex,
+      progressionPercentage:
+        typeof entry.progressionPercentage === 'number' ? entry.progressionPercentage : 0,
+      lastReadAt: typeof entry.lastReadAt === 'string' ? entry.lastReadAt : new Date().toISOString(),
+      cfiLocator: typeof entry.cfiLocator === 'string' ? entry.cfiLocator : undefined,
+    };
+  }
+
+  return Object.keys(clean).length > 0 ? clean : DEFAULT_PROGRESS;
+}
+
+const DEFAULT_BOOKMARKS: Bookmark[] = [
+  {
+    id: 'bm-1',
+    bookId: 'book-1',
+    bookTitle: 'The Last Tide of Padma',
+    chapterIndex: 1,
+    chapterTitle: 'অধ্যায় ১ — কূলভাঙা নদীর গান',
+    selectedText: 'পদ্মার ভাঙন কোনোদিন কারও জন্য অপেক্ষা করেনি...',
+    note: 'Poetic opening reflection on human endurance.',
+    createdAt: '2026-11-18T16:20:00Z',
+  },
+];
+
+function loadBookmarks(): Bookmark[] {
+  const stored = readStored<unknown>('novela_bookmarks', DEFAULT_BOOKMARKS);
+  if (!Array.isArray(stored)) return DEFAULT_BOOKMARKS;
+  const clean = stored.filter(
+    (bm): bm is Bookmark =>
+      !!bm && typeof bm === 'object' && typeof (bm as Bookmark).id === 'string'
+  );
+  return clean;
+}
+
 export const LibraryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [libraryIds, setLibraryIds] = useState<string[]>(() =>
     readStored('novela_library', ['book-1', 'book-2', 'book-3'])
@@ -35,31 +94,11 @@ export const LibraryProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   });
 
-  const [readingProgress, setReadingProgress] = useState<Record<string, ReadingProgress>>(() =>
-    readStored('novela_progress', {
-      'book-1': {
-        bookId: 'book-1',
-        currentChapterIndex: 1,
-        progressionPercentage: 25.0,
-        lastReadAt: new Date().toISOString(),
-      }
-    })
+  const [readingProgress, setReadingProgress] = useState<Record<string, ReadingProgress>>(
+    loadProgress
   );
 
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() =>
-    readStored('novela_bookmarks', [
-      {
-        id: 'bm-1',
-        bookId: 'book-1',
-        bookTitle: 'The Last Tide of Padma',
-        chapterIndex: 1,
-        chapterTitle: 'অধ্যায় ১ — কূলভাঙা নদীর গান',
-        selectedText: 'পদ্মার ভাঙন কোনোদিন কারও জন্য অপেক্ষা করেনি...',
-        note: 'Poetic opening reflection on human endurance.',
-        createdAt: '2026-11-18T16:20:00Z',
-      }
-    ])
-  );
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(loadBookmarks);
 
   useEffect(() => writeStored('novela_library', libraryIds), [libraryIds]);
   useEffect(() => writeStored('novela_favorites', favoriteIds), [favoriteIds]);

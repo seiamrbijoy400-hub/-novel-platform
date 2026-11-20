@@ -3,11 +3,17 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Sun, Moon, BookMarked, Menu, X, ChevronDown } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const [isDark, setIsDark] = useState(() =>
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? (() => { document.documentElement.classList.add('dark'); return true; })()
-      : false
-  );
+  const [isDark, setIsDark] = useState(() => {
+    const prefersDark =
+      typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches
+        : false;
+    if (prefersDark) {
+      document.documentElement.classList.add('dark');
+      return true;
+    }
+    return false;
+  });
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

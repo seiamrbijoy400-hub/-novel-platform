@@ -3,7 +3,7 @@ import { MOCK_BOOKS } from '../data/mockBooks';
 
 type CatalogListener = (books: Book[]) => void;
 
-const CACHE_KEY = 'novela_catalog_v2';
+const CACHE_KEY = 'novela_catalog_v3';
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const PROXY_TIMEOUT_MS = 16000;
 const SNAPSHOT_TIMEOUT_MS = 6000;
@@ -53,14 +53,8 @@ export class CatalogService {
     if (this.hydration) return this.hydration;
     if (this.hydrated && !force) return Promise.resolve(this.catalog);
 
+    // fetchAndMerge publishes intermediate (snapshot) and final (live) results.
     this.hydration = this.fetchAndMerge()
-      .then(books => {
-        this.catalog = books;
-        this.hydrated = true;
-        this.saveCachedCatalog(books);
-        this.listeners.forEach(listener => listener(books));
-        return books;
-      })
       .catch(err => {
         console.warn('Catalog hydration skipped; using cached/local catalog.', err);
         return this.catalog;
@@ -125,17 +119,45 @@ export class CatalogService {
   // ── Real-book hydration (local API + bundled snapshot) ────────────────────
 
   private static async fetchAndMerge(): Promise<Book[]> {
-    const [proxy, snapshot] = await Promise.allSettled([
-      this.fetchJson<Book[] | { books?: Book[] }>('/api/books', PROXY_TIMEOUT_MS),
-      this.fetchJson<Book[] | { books?: Book[] }>('/api/books.json', SNAPSHOT_TIMEOUT_MS),
-    ]);
+    // 1. Bundled snapshot: instant real content, works without any network.
+    const fromSnapshot: Book[] = [];
+    try {
+      const snapshot = await this.fetchJson<Book[] | { books?: Book[] }>(
+        '/api/books.json',
+        SNAPSHOT_TIMEOUT_MS
+      );
+      collectValue(snapshot, fromSnapshot);
+    } catch {
+      // Snapshot missing: the live call below is still attempted.
+    }
 
-    const liveBooks: Book[] = [];
-    collectBooks(proxy, liveBooks);
-    collectBooks(snapshot, liveBooks);
+    if (fromSnapshot.length > 0) {
+      this.publish([...MOCK_BOOKS, ...fromSnapshot]);
+    }
 
-    // Local verified books are always kept and take precedence on duplicates.
-    return this.deduplicateBooks([...MOCK_BOOKS, ...liveBooks]);
+    // 2. Live proxy: replace snapshot data with current provider records.
+    const live: Book[] = [];
+    try {
+      const response = await this.fetchJson<Book[] | { books?: Book[] }>(
+        '/api/books',
+        PROXY_TIMEOUT_MS
+      );
+      collectValue(response, live);
+    } catch {
+      // Live provider unreachable: keep the snapshot/live-cached catalog.
+    }
+
+    return this.publish([...MOCK_BOOKS, ...(live.length > 0 ? live : fromSnapshot)]);
+  }
+
+  /** Merge, store and broadcast a new catalog version. */
+  private static publish(books: Book[]): Book[] {
+    const next = this.deduplicateBooks(books);
+    this.catalog = next;
+    this.hydrated = true;
+    this.saveCachedCatalog(next);
+    this.listeners.forEach(listener => listener(next));
+    return next;
   }
 
   /** fetch with a hard deadline so a stalled request can never block the UI. */
@@ -196,6 +218,7 @@ export class CatalogService {
   private static deduplicateBooks(books: Book[]): Book[] {
     const seen = new Set<string>();
     return books.filter(b => {
+      if (!isUsableBook(b)) return false;
       const key = `${b.title.toLowerCase().trim()}_${b.author.name.toLowerCase().trim()}_${b.languageId}`;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -208,15 +231,30 @@ function isRealBook(book: Book): boolean {
   return book.sourceProviderCode === 'open_library_live';
 }
 
-function collectBooks(
-  result: PromiseSettledResult<Book[] | { books?: Book[] }>,
+/**
+ * Cached/remote records are untrusted: a single malformed entry would crash
+ * every page that renders it. Drop anything missing the fields the UI needs.
+ */
+function isUsableBook(book: Book): boolean {
+  return (
+    !!book &&
+    typeof book.id === 'string' &&
+    typeof book.slug === 'string' &&
+    typeof book.title === 'string' &&
+    !!book.author &&
+    typeof book.author.name === 'string' &&
+    Array.isArray(book.genres) &&
+    typeof book.languageId === 'string'
+  );
+}
+
+function collectValue(
+  value: Book[] | { books?: Book[] } | null | undefined,
   target: Book[]
 ): void {
-  if (result.status !== 'fulfilled') return;
-  const value = result.value;
   if (Array.isArray(value)) {
-    target.push(...value);
+    target.push(...value.filter(isUsableBook));
   } else if (value && Array.isArray(value.books)) {
-    target.push(...value.books);
+    target.push(...value.books.filter(isUsableBook));
   }
 }
